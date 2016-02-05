@@ -2,6 +2,8 @@
 
 namespace test\Enum;
 
+use Enum\Enum;
+
 class EnumTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetItems()
@@ -10,11 +12,11 @@ class EnumTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(3, $items);
         $this->assertContainsOnlyInstancesOf(ExampleEnum::class, $items);
 
-        $foo = $items['FOO'];
+        $foo = $items[ExampleEnum::FOO];
         $this->assertEquals('FOO', $foo->getKey());
         $this->assertEquals('foo', $foo->getValue());
 
-        $bar = $items['BAR'];
+        $bar = $items[ExampleEnum::BAR];
         $this->assertEquals('BAR', $bar->getKey());
         $this->assertEquals('bar', $bar->getValue());
     }
@@ -45,6 +47,45 @@ class EnumTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($foo1->equals($foo2, true));
         $this->assertTrue($foo1->equals('foo'));
         $this->assertTrue($foo1->equals($foo3));
-        $this->assertFalse($foo1->equals($foo3), true);
+        $this->assertFalse($foo1->equals($foo3, true));
+    }
+
+    public function testIn()
+    {
+        $foo = ExampleEnum::get(ExampleEnum::FOO);
+        $bar = ExampleEnum::get(ExampleEnum::BAR);
+        $xyz = ExampleEnum::get(ExampleEnum::XYZ);
+
+        $this->assertTrue($foo->in(['foo', 'xyz']));
+        $this->assertTrue($foo->in([$foo, $bar]));
+        $this->assertFalse($foo->in(['bar', 'xyz']));
+        $this->assertFalse($foo->in([$bar, $xyz]));
+        $this->assertTrue($bar->in([$bar, 'bar']));
+        $this->assertFalse($xyz->in([]));
+    }
+
+    public function testToString()
+    {
+        $foo = ExampleEnum::get(ExampleEnum::FOO);
+        $bar = ExampleEnum::get(ExampleEnum::BAR);
+
+        $this->assertEquals('Foo', (string)$foo);
+        $this->assertEquals('Bar', (string)$bar);
+    }
+
+    public function testRegisterPrinter()
+    {
+        $foo = ExampleEnum::get(ExampleEnum::FOO);
+        $bar = ExampleEnum::get(ExampleEnum::BAR);
+        $printer = new UppercasePrinter();
+        Enum::registerPrinter($printer);
+
+        $this->assertEquals('FOO', (string)$foo);
+        $this->assertEquals('BAR', (string)$bar);
+
+        // revert do default printer
+        Enum::registerPrinter(null);
+        $this->assertEquals('Foo', (string)$foo);
+        $this->assertEquals('Bar', (string)$bar);
     }
 }

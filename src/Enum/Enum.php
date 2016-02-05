@@ -2,6 +2,9 @@
 
 namespace Enum;
 
+use Enum\Printer\EnumPrinter;
+use Enum\Printer\SimpleEnumPrinter;
+
 abstract class Enum
 {
     /**
@@ -18,6 +21,11 @@ abstract class Enum
      * @var array
      */
     private static $items = [];
+
+    /**
+     * @var EnumPrinter
+     */
+    private static $printer;
 
     /**
      * Enum constructor.
@@ -57,7 +65,7 @@ abstract class Enum
             $values = self::getValuesMap($class);
             $items = [];
             foreach ($values as $key => $value) {
-                $items[$key] = new $class($key, $value);
+                $items[$value] = new $class($key, $value);
             }
             self::$items[$class] = $items;
         }
@@ -122,6 +130,31 @@ abstract class Enum
         }
 
         return false;
+    }
+
+    /**
+     * Registers new enum printer
+     * @param EnumPrinter $printer
+     */
+    public static function registerPrinter(EnumPrinter $printer = null)
+    {
+        self::$printer = $printer;
+    }
+
+    /**
+     * Converts enum object to string using currently registered printer.
+     */
+    public function __toString()
+    {
+        static $defaultPrinter;
+
+        if ($defaultPrinter === null) {
+            $defaultPrinter = new SimpleEnumPrinter();
+        }
+
+        $printer = self::$printer ?: $defaultPrinter;
+
+        return $printer->getPrint($this);
     }
 
     /**
