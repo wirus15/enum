@@ -15,5 +15,11 @@
   },
   "config": {
     "bin-dir": "bin"
+  },
+  "scripts": {
+    "test": [
+      "bin/phpunit test",
+      "bin/phpspec run"
+    ]
   }
 }
