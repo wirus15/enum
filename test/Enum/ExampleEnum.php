@@ -10,3 +10,8 @@ class ExampleEnum extends Enum
     const BAR = 'bar';
     const XYZ = 'xyz';
 }
+
+class AnotherExampleEnum extends Enum
+{
+    const FOO = 'foo';
+}

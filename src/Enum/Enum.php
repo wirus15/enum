@@ -86,22 +86,6 @@ abstract class Enum
     }
 
     /**
-     * Checks if this enum is contained in the given array of values
-     * @param array $values
-     * @return bool
-     */
-    public function in(array $values)
-    {
-        foreach ($values as $value) {
-            if ($this->equals($value)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Compares enum object with given value.
      * @param mixed $value
      * @param boolean $strict Also checks the given value's type
@@ -122,6 +106,22 @@ abstract class Enum
         }
 
         return $this->getValue() == $value;
+    }
+
+    /**
+     * Checks if this enum is contained in the given array of values
+     * @param array $values
+     * @return bool
+     */
+    public function in(array $values)
+    {
+        foreach ($values as $value) {
+            if ($this->equals($value)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

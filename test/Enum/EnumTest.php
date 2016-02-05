@@ -31,4 +31,20 @@ class EnumTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('BAR', $bar->getKey());
         $this->assertEquals('bar', $bar->getValue());
     }
+
+    public function testEquals()
+    {
+        $foo1 = ExampleEnum::get(ExampleEnum::FOO);
+        $foo2 = ExampleEnum::get(ExampleEnum::FOO);
+        $foo3 = AnotherExampleEnum::get(AnotherExampleEnum::FOO);
+        $bar = ExampleEnum::get(ExampleEnum::BAR);
+
+        $this->assertFalse($foo1->equals($bar));
+        $this->assertFalse($foo1->equals('blee'));
+        $this->assertTrue($foo1->equals($foo2));
+        $this->assertTrue($foo1->equals($foo2, true));
+        $this->assertTrue($foo1->equals('foo'));
+        $this->assertTrue($foo1->equals($foo3));
+        $this->assertFalse($foo1->equals($foo3), true);
+    }
 }
