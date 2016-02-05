@@ -1,6 +1,6 @@
 {
-  "name": "wirus15/Enum",
-  "type": "project",
+  "name": "wirus15/enum",
+  "type": "library",
   "autoload": {
     "psr-0": {
       "": ["src/", "./"]
