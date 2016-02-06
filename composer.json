@@ -1,9 +1,16 @@
 {
   "name": "wirus15/enum",
   "type": "library",
+  "version": "0.1",
+  "license": "MIT",
+  "authors": [{
+    "name": "Maciej Krawczyk",
+    "email": "wirus15@gmail.com"
+  }],
   "autoload": {
-    "psr-0": {
-      "": ["src/", "./"]
+    "psr-4": {
+      "Enum\\": "src/Enum",
+      "test\\Enum\\": "test/Enum"
     }
   },
   "require": {
