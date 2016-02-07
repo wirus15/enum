@@ -3,6 +3,7 @@
 namespace test\Enum;
 
 use Enum\Enum;
+use Enum\EnumException;
 
 class EnumTest extends \PHPUnit_Framework_TestCase
 {
@@ -87,5 +88,18 @@ class EnumTest extends \PHPUnit_Framework_TestCase
         Enum::registerPrinter(null);
         $this->assertEquals('Foo', (string)$foo);
         $this->assertEquals('Bar', (string)$bar);
+    }
+
+    public function testGetAndGetItemsWithClassName()
+    {
+        $this->assertEquals(ExampleEnum::getItems(), Enum::getItems(ExampleEnum::class));
+        $this->assertEquals(ExampleEnum::get(ExampleEnum::FOO), Enum::get(ExampleEnum::FOO, ExampleEnum::class));
+        $this->assertEquals(ExampleEnum::get(ExampleEnum::BAR), Enum::get(ExampleEnum::BAR, ExampleEnum::class));
+
+        $this->expectException(EnumException::class);
+        Enum::get(ExampleEnum::FOO, 'some_fake_class');
+
+        $this->expectException(EnumException::class);
+        Enum::getItems('some_fake_class');
     }
 }

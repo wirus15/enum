@@ -41,7 +41,7 @@ abstract class Enum
     /**
      * @return mixed
      */
-    public function getKey()
+    final public function getKey()
     {
         return $this->key;
     }
@@ -49,18 +49,25 @@ abstract class Enum
     /**
      * @return mixed
      */
-    public function getValue()
+    final public function getValue()
     {
         return $this->value;
     }
 
     /**
      * Get all enum items of particular enum class
+     * @param string|null $class
      * @return Enum[]
+     * @throws EnumException
      */
-    public static function getItems()
+    final public static function getItems($class = null)
     {
-        $class = get_called_class();
+        $class = $class ?: get_called_class();
+
+        if (!is_subclass_of($class, self::class)) {
+            throw EnumException::notValidEnumClass($class);
+        }
+
         if (!isset(self::$items[$class])) {
             $values = self::getValuesMap($class);
             $items = [];
@@ -76,18 +83,20 @@ abstract class Enum
     /**
      * Returns an enum item with given key
      * @param mixed $key
+     * @param string|null $class
      * @return Enum
      * @throws EnumException
      */
-    public static function get($key)
+    final public static function get($key, $class = null)
     {
-        $items = static::getItems();
+        $class = $class ?: get_called_class();
+        if (!is_subclass_of($class, self::class)) {
+            throw EnumException::notValidEnumClass($class);
+        }
+
+        $items = self::getItems($class);
         if (!isset($items[$key])) {
-            throw new EnumException(sprintf(
-                'Enum class %s does not have key: %s.',
-                get_called_class(),
-                $key
-            ));
+            throw EnumException::invalidEnumKey($class, $key);
         }
 
         return $items[$key];
@@ -121,7 +130,7 @@ abstract class Enum
      * @param array $values
      * @return bool
      */
-    public function in(array $values)
+    final public function in(array $values)
     {
         foreach ($values as $value) {
             if ($this->equals($value)) {
@@ -136,7 +145,7 @@ abstract class Enum
      * Registers new enum printer
      * @param EnumPrinter $printer
      */
-    public static function registerPrinter(EnumPrinter $printer = null)
+    final public static function registerPrinter(EnumPrinter $printer = null)
     {
         self::$printer = $printer;
     }
