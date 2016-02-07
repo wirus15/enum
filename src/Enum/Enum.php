@@ -41,7 +41,7 @@ abstract class Enum
     /**
      * @return mixed
      */
-    final public function getKey()
+    public function getKey()
     {
         return $this->key;
     }
@@ -49,7 +49,7 @@ abstract class Enum
     /**
      * @return mixed
      */
-    final public function getValue()
+    public function getValue()
     {
         return $this->value;
     }
@@ -60,7 +60,7 @@ abstract class Enum
      * @return Enum[]
      * @throws EnumException
      */
-    final public static function getItems($class = null)
+    public static function getItems($class = null)
     {
         $class = $class ?: get_called_class();
 
@@ -87,7 +87,7 @@ abstract class Enum
      * @return Enum
      * @throws EnumException
      */
-    final public static function get($key, $class = null)
+    public static function get($key, $class = null)
     {
         $class = $class ?: get_called_class();
         if (!is_subclass_of($class, self::class)) {
@@ -130,7 +130,7 @@ abstract class Enum
      * @param array $values
      * @return bool
      */
-    final public function in(array $values)
+    public function in(array $values)
     {
         foreach ($values as $value) {
             if ($this->equals($value)) {
@@ -145,7 +145,7 @@ abstract class Enum
      * Registers new enum printer
      * @param EnumPrinter $printer
      */
-    final public static function registerPrinter(EnumPrinter $printer = null)
+    public static function registerPrinter(EnumPrinter $printer = null)
     {
         self::$printer = $printer;
     }
