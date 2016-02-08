@@ -22,4 +22,13 @@ class EnumException extends \Exception
     {
         return new self(sprintf('Enum class %s does not have key: %s.', $class, $key));
     }
+
+    /**
+     * @param string $class
+     * @return EnumException
+     */
+    public static function notCloneable($class)
+    {
+        return new self($class . ' is not cloneable.');
+    }
 }

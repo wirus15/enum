@@ -111,4 +111,26 @@ class EnumTest extends \PHPUnit_Framework_TestCase
         $this->expectException(EnumException::class);
         ExampleEnum::WRONG();
     }
+
+    public function testKeys()
+    {
+        $expected = ['FOO', 'BAR', 'XYZ'];
+        $this->assertEquals($expected, ExampleEnum::keys());
+        $this->assertEquals($expected, Enum::keys(ExampleEnum::class));
+    }
+
+    public function testValues()
+    {
+        $expected = ['foo', 'bar', 'xyz'];
+        $this->assertEquals($expected, ExampleEnum::values());
+        $this->assertEquals($expected, Enum::values(ExampleEnum::class));
+    }
+
+    public function testClone()
+    {
+        $foo = ExampleEnum::FOO();
+
+        $this->expectException(EnumException::class);
+        $clone = clone $foo;
+    }
 }

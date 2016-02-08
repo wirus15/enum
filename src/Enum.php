@@ -142,6 +142,34 @@ abstract class Enum
     }
 
     /**
+     * @param string|null $class
+     * @return string[]
+     * @throws EnumException
+     */
+    public static function keys($class = null)
+    {
+        $class = $class ?: get_called_class();
+
+        return array_values(array_map(function(Enum $enum) {
+            return $enum->getKey();
+        }, self::getItems($class)));
+    }
+
+    /**
+     * @param string|null $class
+     * @return array
+     * @throws EnumException
+     */
+    public static function values($class = null)
+    {
+        $class = $class ?: get_called_class();
+
+        return array_values(array_map(function(Enum $enum) {
+            return $enum->getValue();
+        }, self::getItems($class)));
+    }
+
+    /**
      * Registers new enum printer
      * @param EnumPrinter $printer
      */
@@ -183,6 +211,14 @@ abstract class Enum
         }
 
         return array_pop($items);
+    }
+
+    /**
+     * @throws EnumException
+     */
+    public function __clone()
+    {
+        throw EnumException::notCloneable(get_class($this));
     }
 
     /**
