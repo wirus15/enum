@@ -102,4 +102,13 @@ class EnumTest extends \PHPUnit_Framework_TestCase
         $this->expectException(EnumException::class);
         Enum::getItems('some_fake_class');
     }
+
+    public function testCallStatic()
+    {
+        $this->assertEquals(ExampleEnum::get(ExampleEnum::FOO), ExampleEnum::FOO());
+        $this->assertEquals(ExampleEnum::get(ExampleEnum::BAR), ExampleEnum::BAR());
+
+        $this->expectException(EnumException::class);
+        ExampleEnum::WRONG();
+    }
 }

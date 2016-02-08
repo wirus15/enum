@@ -167,6 +167,25 @@ abstract class Enum
     }
 
     /**
+     * @param string $name
+     * @param array $arguments
+     * @return Enum
+     * @throws EnumException
+     */
+    public static function __callStatic($name, $arguments)
+    {
+        $items = array_filter(static::getItems(), function(Enum $item) use ($name) {
+            return $item->getKey() === $name;
+        });
+
+        if (count($items) !== 1) {
+            throw EnumException::invalidEnumKey(get_called_class(), $name);
+        }
+
+        return array_pop($items);
+    }
+
+    /**
      * @param string $class
      * @return array
      */
