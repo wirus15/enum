@@ -15,12 +15,12 @@ class EnumException extends \Exception
 
     /**
      * @param string $class
-     * @param string $key
+     * @param string $value
      * @return EnumException
      */
-    public static function invalidEnumKey($class, $key)
+    public static function invalidEnumValue($class, $value)
     {
-        return new self(sprintf('Enum class %s does not have key: %s.', $class, $key));
+        return new self(sprintf('Enum class %s does not have value: %s.', $class, $value));
     }
 
     /**

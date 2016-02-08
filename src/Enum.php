@@ -20,6 +20,11 @@ abstract class Enum
     /**
      * @var array
      */
+    private static $constants = [];
+
+    /**
+     * @var array
+     */
     private static $items = [];
 
     /**
@@ -64,42 +69,44 @@ abstract class Enum
     {
         $class = $class ?: get_called_class();
 
-        if (!is_subclass_of($class, self::class)) {
-            throw EnumException::notValidEnumClass($class);
+        if (isset(self::$items[$class])) {
+            return self::$items[$class];
         }
 
-        if (!isset(self::$items[$class])) {
-            $values = self::getValuesMap($class);
-            $items = [];
-            foreach ($values as $key => $value) {
-                $items[$value] = new $class($key, $value);
-            }
-            self::$items[$class] = $items;
+        $constants = self::constants($class);
+        $items = [];
+        foreach ($constants as $key => $value) {
+            $items[$value] = new $class($key, $value);
         }
 
-        return self::$items[$class];
+        return self::$items[$class] = $items;
     }
 
     /**
-     * Returns an enum item with given key
-     * @param mixed $key
+     * Returns an enum item with given value
+     * @param mixed $value
      * @param string|null $class
      * @return Enum
      * @throws EnumException
      */
-    public static function get($key, $class = null)
+    public static function get($value, $class = null)
     {
-        $class = $class ?: get_called_class();
-        if (!is_subclass_of($class, self::class)) {
-            throw EnumException::notValidEnumClass($class);
+        if (!static::has($value, $class)) {
+            throw EnumException::invalidEnumValue($class, $value);
         }
 
-        $items = self::all($class);
-        if (!isset($items[$key])) {
-            throw EnumException::invalidEnumKey($class, $key);
-        }
+        return static::all($class)[$value];
+    }
 
-        return $items[$key];
+    /**
+     * Tells if the enum contains a particular value
+     * @param mixed $value
+     * @param string|null $class
+     * @return bool
+     */
+    public static function has($value, $class = null)
+    {
+        return array_key_exists($value, static::all($class));
     }
 
     /**
@@ -148,11 +155,7 @@ abstract class Enum
      */
     public static function keys($class = null)
     {
-        $class = $class ?: get_called_class();
-
-        return array_values(array_map(function(Enum $enum) {
-            return $enum->key();
-        }, self::all($class)));
+        return array_keys(static::constants($class));
     }
 
     /**
@@ -162,11 +165,7 @@ abstract class Enum
      */
     public static function values($class = null)
     {
-        $class = $class ?: get_called_class();
-
-        return array_values(array_map(function(Enum $enum) {
-            return $enum->value();
-        }, self::all($class)));
+        return array_values(static::constants($class));
     }
 
     /**
@@ -200,17 +199,15 @@ abstract class Enum
      * @return Enum
      * @throws EnumException
      */
-    public static function __callStatic($name, $arguments)
+    public static function __callStatic($name, $arguments = [])
     {
-        $items = array_filter(static::all(), function(Enum $item) use ($name) {
-            return $item->key() === $name;
-        });
+        $constants = static::constants();
 
-        if (count($items) !== 1) {
-            throw EnumException::invalidEnumKey(get_called_class(), $name);
+        if (!array_key_exists($name, $constants)) {
+            throw EnumException::invalidEnumValue(get_called_class(), $name);
         }
 
-        return array_pop($items);
+        return static::get($constants[$name]);
     }
 
     /**
@@ -224,12 +221,22 @@ abstract class Enum
     /**
      * @param string $class
      * @return array
+     * @throws EnumException
      */
-    private static function getValuesMap($class)
+    private static function constants($class = null)
     {
-        $reflection = new \ReflectionClass($class);
-        $constants = $reflection->getConstants();
+        $class = $class ?: get_called_class();
 
-        return $constants;
+        if (isset(self::$constants[$class])) {
+            return self::$constants[$class];
+        }
+
+        if (!is_subclass_of($class, self::class)) {
+            throw EnumException::notValidEnumClass($class);
+        }
+
+        $reflection = new \ReflectionClass($class);
+
+        return self::$constants[$class] = $reflection->getConstants();
     }
 }

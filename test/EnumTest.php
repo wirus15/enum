@@ -7,7 +7,7 @@ use Enum\EnumException;
 
 class EnumTest extends \PHPUnit_Framework_TestCase
 {
-    public function testGetItems()
+    public function testAll()
     {
         $items = ExampleEnum::all();
         $this->assertCount(3, $items);
@@ -35,7 +35,7 @@ class EnumTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('bar', $bar->value());
     }
 
-    public function testEquals()
+    public function testIs()
     {
         $foo1 = ExampleEnum::get(ExampleEnum::FOO);
         $foo2 = ExampleEnum::get(ExampleEnum::FOO);
@@ -90,7 +90,7 @@ class EnumTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Bar', (string)$bar);
     }
 
-    public function testGetAndGetItemsWithClassName()
+    public function testGetAndAllWithClassName()
     {
         $this->assertEquals(ExampleEnum::all(), Enum::all(ExampleEnum::class));
         $this->assertEquals(ExampleEnum::get(ExampleEnum::FOO), Enum::get(ExampleEnum::FOO, ExampleEnum::class));
@@ -132,5 +132,13 @@ class EnumTest extends \PHPUnit_Framework_TestCase
 
         $this->expectException(EnumException::class);
         $clone = clone $foo;
+    }
+
+    public function testHas()
+    {
+        $this->assertTrue(ExampleEnum::has('foo'));
+        $this->assertTrue(ExampleEnum::has('bar'));
+        $this->assertTrue(Enum::has('xyz', ExampleEnum::class));
+        $this->assertFalse(ExampleEnum::has('wrong'));
     }
 }
