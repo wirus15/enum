@@ -41,7 +41,7 @@ abstract class Enum
     /**
      * @return mixed
      */
-    public function getKey()
+    public function key()
     {
         return $this->key;
     }
@@ -49,7 +49,7 @@ abstract class Enum
     /**
      * @return mixed
      */
-    public function getValue()
+    public function value()
     {
         return $this->value;
     }
@@ -60,7 +60,7 @@ abstract class Enum
      * @return Enum[]
      * @throws EnumException
      */
-    public static function getItems($class = null)
+    public static function all($class = null)
     {
         $class = $class ?: get_called_class();
 
@@ -94,7 +94,7 @@ abstract class Enum
             throw EnumException::notValidEnumClass($class);
         }
 
-        $items = self::getItems($class);
+        $items = self::all($class);
         if (!isset($items[$key])) {
             throw EnumException::invalidEnumKey($class, $key);
         }
@@ -108,7 +108,7 @@ abstract class Enum
      * @param boolean $strict Also checks the given value's type
      * @return boolean
      */
-    public function equals($value, $strict = false)
+    public function is($value, $strict = false)
     {
         if ($this === $value) {
             return true;
@@ -119,10 +119,10 @@ abstract class Enum
         }
 
         if ($value instanceof self) {
-            $value = $value->getValue();
+            $value = $value->value();
         }
 
-        return $this->getValue() == $value;
+        return $this->value() == $value;
     }
 
     /**
@@ -133,7 +133,7 @@ abstract class Enum
     public function in(array $values)
     {
         foreach ($values as $value) {
-            if ($this->equals($value)) {
+            if ($this->is($value)) {
                 return true;
             }
         }
@@ -151,8 +151,8 @@ abstract class Enum
         $class = $class ?: get_called_class();
 
         return array_values(array_map(function(Enum $enum) {
-            return $enum->getKey();
-        }, self::getItems($class)));
+            return $enum->key();
+        }, self::all($class)));
     }
 
     /**
@@ -165,8 +165,8 @@ abstract class Enum
         $class = $class ?: get_called_class();
 
         return array_values(array_map(function(Enum $enum) {
-            return $enum->getValue();
-        }, self::getItems($class)));
+            return $enum->value();
+        }, self::all($class)));
     }
 
     /**
@@ -202,8 +202,8 @@ abstract class Enum
      */
     public static function __callStatic($name, $arguments)
     {
-        $items = array_filter(static::getItems(), function(Enum $item) use ($name) {
-            return $item->getKey() === $name;
+        $items = array_filter(static::all(), function(Enum $item) use ($name) {
+            return $item->key() === $name;
         });
 
         if (count($items) !== 1) {

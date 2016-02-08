@@ -9,30 +9,30 @@ class EnumTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetItems()
     {
-        $items = ExampleEnum::getItems();
+        $items = ExampleEnum::all();
         $this->assertCount(3, $items);
         $this->assertContainsOnlyInstancesOf(ExampleEnum::class, $items);
 
         $foo = $items[ExampleEnum::FOO];
-        $this->assertEquals('FOO', $foo->getKey());
-        $this->assertEquals('foo', $foo->getValue());
+        $this->assertEquals('FOO', $foo->key());
+        $this->assertEquals('foo', $foo->value());
 
         $bar = $items[ExampleEnum::BAR];
-        $this->assertEquals('BAR', $bar->getKey());
-        $this->assertEquals('bar', $bar->getValue());
+        $this->assertEquals('BAR', $bar->key());
+        $this->assertEquals('bar', $bar->value());
     }
 
     public function testGet()
     {
         $foo = ExampleEnum::get(ExampleEnum::FOO);
         $this->assertInstanceOf(ExampleEnum::class, $foo);
-        $this->assertEquals('FOO', $foo->getKey());
-        $this->assertEquals('foo', $foo->getValue());
+        $this->assertEquals('FOO', $foo->key());
+        $this->assertEquals('foo', $foo->value());
 
         $bar = ExampleEnum::get(ExampleEnum::BAR);
         $this->assertInstanceOf(ExampleEnum::class, $bar);
-        $this->assertEquals('BAR', $bar->getKey());
-        $this->assertEquals('bar', $bar->getValue());
+        $this->assertEquals('BAR', $bar->key());
+        $this->assertEquals('bar', $bar->value());
     }
 
     public function testEquals()
@@ -42,13 +42,13 @@ class EnumTest extends \PHPUnit_Framework_TestCase
         $foo3 = AnotherExampleEnum::get(AnotherExampleEnum::FOO);
         $bar = ExampleEnum::get(ExampleEnum::BAR);
 
-        $this->assertFalse($foo1->equals($bar));
-        $this->assertFalse($foo1->equals('blee'));
-        $this->assertTrue($foo1->equals($foo2));
-        $this->assertTrue($foo1->equals($foo2, true));
-        $this->assertTrue($foo1->equals('foo'));
-        $this->assertTrue($foo1->equals($foo3));
-        $this->assertFalse($foo1->equals($foo3, true));
+        $this->assertFalse($foo1->is($bar));
+        $this->assertFalse($foo1->is('blee'));
+        $this->assertTrue($foo1->is($foo2));
+        $this->assertTrue($foo1->is($foo2, true));
+        $this->assertTrue($foo1->is('foo'));
+        $this->assertTrue($foo1->is($foo3));
+        $this->assertFalse($foo1->is($foo3, true));
     }
 
     public function testIn()
@@ -92,7 +92,7 @@ class EnumTest extends \PHPUnit_Framework_TestCase
 
     public function testGetAndGetItemsWithClassName()
     {
-        $this->assertEquals(ExampleEnum::getItems(), Enum::getItems(ExampleEnum::class));
+        $this->assertEquals(ExampleEnum::all(), Enum::all(ExampleEnum::class));
         $this->assertEquals(ExampleEnum::get(ExampleEnum::FOO), Enum::get(ExampleEnum::FOO, ExampleEnum::class));
         $this->assertEquals(ExampleEnum::get(ExampleEnum::BAR), Enum::get(ExampleEnum::BAR, ExampleEnum::class));
 
@@ -100,7 +100,7 @@ class EnumTest extends \PHPUnit_Framework_TestCase
         Enum::get(ExampleEnum::FOO, 'some_fake_class');
 
         $this->expectException(EnumException::class);
-        Enum::getItems('some_fake_class');
+        Enum::all('some_fake_class');
     }
 
     public function testCallStatic()

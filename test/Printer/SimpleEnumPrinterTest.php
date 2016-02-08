@@ -23,7 +23,7 @@ class SimpleEnumPrinterTest extends \PHPUnit_Framework_TestCase
      */
     public function testPrint($key, $expected)
     {
-        $mock = \Mockery::mock(Enum::class, ['getKey' => $key]);
+        $mock = \Mockery::mock(Enum::class, ['key' => $key]);
         $result = $this->sut->getPrint($mock);
         $this->assertEquals($expected, $result);
     }

@@ -9,6 +9,6 @@ class UppercasePrinter implements EnumPrinter
 {
     public function getPrint(Enum $enum)
     {
-        return strtoupper($enum->getKey());
+        return strtoupper($enum->key());
     }
 }
