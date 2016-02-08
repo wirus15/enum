@@ -18,15 +18,14 @@
   },
   "require-dev": {
     "phpunit/phpunit": "~5.2",
-    "phpspec/phpspec": "~2.4"
+    "mockery/mockery": "^0.9.4"
   },
   "config": {
     "bin-dir": "bin"
   },
   "scripts": {
     "test": [
-      "bin/phpunit test",
-      "bin/phpspec run"
+      "bin/phpunit test"
     ]
   }
 }
