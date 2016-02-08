@@ -44,6 +44,7 @@ abstract class Enum
     }
 
     /**
+     * Returns enum key - constant name
      * @return mixed
      */
     public function key()
@@ -52,6 +53,7 @@ abstract class Enum
     }
 
     /**
+     * Returns enum value - constant value
      * @return mixed
      */
     public function value()
@@ -91,6 +93,10 @@ abstract class Enum
      */
     public static function get($value, $class = null)
     {
+        if ($value instanceof self) {
+            $value = $value->value();
+        }
+
         if (!static::has($value, $class)) {
             throw EnumException::invalidEnumValue($class, $value);
         }
@@ -149,6 +155,7 @@ abstract class Enum
     }
 
     /**
+     * Returns all enum keys of particular class
      * @param string|null $class
      * @return string[]
      * @throws EnumException
@@ -159,6 +166,7 @@ abstract class Enum
     }
 
     /**
+     * Returns all enum values of particular class
      * @param string|null $class
      * @return array
      * @throws EnumException
@@ -219,6 +227,7 @@ abstract class Enum
     }
 
     /**
+     * Returns constants map of given class
      * @param string $class
      * @return array
      * @throws EnumException
