@@ -9,8 +9,8 @@
   }],
   "autoload": {
     "psr-4": {
-      "Enum\\": "src/Enum",
-      "test\\Enum\\": "test/Enum"
+      "Enum\\": "src",
+      "test\\Enum\\": "test"
     }
   },
   "require": {
