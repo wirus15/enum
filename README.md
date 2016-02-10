@@ -65,6 +65,7 @@ class AnotherExample extends Enum
 
 $fby = AnotherExample::get('fby');
 echo (string)$fby;                        // 'Foo Bar Yolo'
+```
 
 You can register your own printer to customize:
 ```php
@@ -79,3 +80,4 @@ class ValuePrinter implements EnumPrinter
 Enum::registerPrinter(new ValuePrinter());
 
 echo (string)$fby;                        // 'fby'
+```
