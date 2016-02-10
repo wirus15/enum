@@ -207,7 +207,7 @@ abstract class Enum
      * @return Enum
      * @throws EnumException
      */
-    public static function __callStatic($name, $arguments = [])
+    public static function __callStatic($name, $arguments)
     {
         $constants = static::constants();
 
