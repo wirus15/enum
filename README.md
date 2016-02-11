@@ -2,7 +2,7 @@
 A simple PHP library for creating enum objects.
 
 ## Examples
-
+Defining a new enum class
 ```php
 use Enum\Enum;
 
@@ -13,46 +13,77 @@ final class Example extends Enum
     const BAR = 2;
     const YOLO = 3;
 }
+```
 
-// getting a single enum instance
+Basic usage
+```php
+$foo = Example::get(Example::FOO);
+$bar = Example::get('bar');
+$yolo = Example::YOLO();
+
+function test(Example $enum) 
+{
+    if ($enum->is(Example::FOO)) {
+        echo 'foo';
+    } else if ($enum->is(Example::BAR)) {
+        echo 'bar';
+    } else {
+        echo $enum;
+    }
+}
+
+test($foo);   // foo
+test($bar);   // bar
+test($yolo);  // Yolo
+
+```
+
+Getting enum instances, listing keys and values
+
+```php
 Example::get(Example::FOO);               // instance of Example
-Example::FOO();                           // static call
-Enum::get(Example::FOO, Example::class);  // specified enum class
-
-// getting a list of instances
+Example::FOO();                           // shortcut
 Example::all();                           // array of Example instances
-Enum::all(Example::class);                // same as above
 
 // keys and values
 Example::keys();                          // array of keys ['FOO', 'BAR', 'YOLO']
-Enum::keys(Example::class);               // same as above
-
 Example::values();                        // array of values [1, 2, 3]
-Enum::values(Example::class);             // same as above
 
 // checking if value exists
 Example::has(3);                          // true
-Enum::has(1, Example::class);             // true
 Example::has(4);                          // false
+```
 
-// Single enum properties
+Getting single enum properties
+```php
 $foo = Example::FOO();
 $foo->key();                              // 'FOO'
 $foo->value();                            // 1
+```
 
-// comparing enums
+Comparing enums
+```php
 $foo = Example::FOO();
 $foo->is(1);                              // true
 $foo->is(Example::FOO);                   // true
 $foo->is($foo);                           // true
 
-// comparing with strict option
+// comparing with strict option (type comparison)
 $foo->is($foo, true);                     // true
 $foo->is(1, true);                        // false
 
 // searching in array
 $foo->in([1,2,3]);                        // true
 $foo->in([2,3]);                          // false
+```
+You can also make static calls and specify enum class
+
+```php
+Enum::get(Example::FOO, Example::class);
+Enum::all(Example::class);    
+Enum::keys(Example::class);      
+Enum::values(Example::class); 
+Enum::has(1, Example::class);
 ```
 
 ## Printers
@@ -81,3 +112,5 @@ Enum::registerPrinter(new ValuePrinter());
 
 echo (string)$fby;                        // 'fby'
 ```
+## License
+This library is released under [MIT license](./LICENSE.md).
