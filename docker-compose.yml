@@ -1,0 +1,4 @@
+enum:
+  build: .
+  volumes:
+    - .:/home/wirus/enum
