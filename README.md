@@ -112,5 +112,24 @@ Enum::registerPrinter(new ValuePrinter());
 
 echo (string)$fby;                        // 'fby'
 ```
+
+## Development and tests
+
+To develop this lib we are using [docker](http://docker.io) and [docker-compose](https://docs.docker.com/compose/overview/).
+After installation of those you should run:
+
+```
+bash
+docker-compose up
+docker-compose run enum bash
+```
+
+Then on docker console run:
+
+```bash
+composer install
+composer test
+```
+
 ## License
 This library is released under [MIT license](./LICENSE.md).
