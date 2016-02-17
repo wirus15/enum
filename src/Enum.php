@@ -62,6 +62,23 @@ abstract class Enum
     }
 
     /**
+     * Returns human readable label provided by currently registered LabelProvider
+     * @return string
+     */
+    public function label()
+    {
+        static $defaultPrinter;
+
+        if ($defaultPrinter === null) {
+            $defaultPrinter = new SimpleEnumPrinter();
+        }
+
+        $printer = self::$printer ?: $defaultPrinter;
+
+        return $printer->getPrint($this);
+    }
+
+    /**
      * Get all enum items of particular enum class
      * @param string|null $class
      * @return Enum[]
@@ -186,19 +203,11 @@ abstract class Enum
     }
 
     /**
-     * Converts enum object to string using currently registered printer.
+     * Returns label
      */
     public function __toString()
     {
-        static $defaultPrinter;
-
-        if ($defaultPrinter === null) {
-            $defaultPrinter = new SimpleEnumPrinter();
-        }
-
-        $printer = self::$printer ?: $defaultPrinter;
-
-        return $printer->getPrint($this);
+        return $this->label();
     }
 
     /**

@@ -67,13 +67,15 @@ class EnumTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($xyz->in([]));
     }
 
-    public function testToString()
+    public function testLabelAndToString()
     {
         $foo = ExampleEnum::get(ExampleEnum::FOO);
         $bar = ExampleEnum::get(ExampleEnum::BAR);
 
-        $this->assertEquals('Foo', (string)$foo);
-        $this->assertEquals('Bar', (string)$bar);
+        $this->assertEquals('Foo', $foo->label());
+        $this->assertEquals('Bar', $bar->label());
+        $this->assertEquals($foo->label(), (string)$foo);
+        $this->assertEquals($bar->label(), (string)$bar);
     }
 
     public function testRegisterPrinter()
@@ -83,13 +85,13 @@ class EnumTest extends \PHPUnit_Framework_TestCase
         $printer = new UppercasePrinter();
         Enum::registerPrinter($printer);
 
-        $this->assertEquals('FOO', (string)$foo);
-        $this->assertEquals('BAR', (string)$bar);
+        $this->assertEquals('FOO', $foo->label());
+        $this->assertEquals('BAR', $bar->label());
 
         // revert do default printer
         Enum::registerPrinter(null);
-        $this->assertEquals('Foo', (string)$foo);
-        $this->assertEquals('Bar', (string)$bar);
+        $this->assertEquals('Foo', $foo->label());
+        $this->assertEquals('Bar', $bar->label());
     }
 
     public function testGetAndAllWithClassName()
