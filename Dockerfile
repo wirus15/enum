@@ -1,4 +1,4 @@
-FROM php:7.0.2-cli
+FROM php:5.6-cli
 
 RUN apt-get update \
     && apt-get install -y git curl bzip2 libssl-dev zlib1g-dev libicu-dev nano \
