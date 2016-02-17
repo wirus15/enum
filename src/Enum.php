@@ -2,8 +2,8 @@
 
 namespace Enum;
 
-use Enum\Printer\EnumPrinter;
-use Enum\Printer\SimpleEnumPrinter;
+use Enum\Label\LabelProvider;
+use Enum\Label\SimpleLabelProvider;
 
 abstract class Enum
 {
@@ -28,9 +28,9 @@ abstract class Enum
     private static $items = [];
 
     /**
-     * @var EnumPrinter
+     * @var LabelProvider
      */
-    private static $printer;
+    private static $labelProvider;
 
     /**
      * Enum constructor.
@@ -67,15 +67,15 @@ abstract class Enum
      */
     public function label()
     {
-        static $defaultPrinter;
+        static $defaultProvider;
 
-        if ($defaultPrinter === null) {
-            $defaultPrinter = new SimpleEnumPrinter();
+        if ($defaultProvider === null) {
+            $defaultProvider = new SimpleLabelProvider();
         }
 
-        $printer = self::$printer ?: $defaultPrinter;
+        $provider = self::$labelProvider ?: $defaultProvider;
 
-        return $printer->getPrint($this);
+        return $provider->getPrint($this);
     }
 
     /**
@@ -194,12 +194,12 @@ abstract class Enum
     }
 
     /**
-     * Registers new enum printer
-     * @param EnumPrinter $printer
+     * Sets a new label provider
+     * @param LabelProvider $labelProvider
      */
-    public static function registerPrinter(EnumPrinter $printer = null)
+    public static function setLabelProvider(LabelProvider $labelProvider = null)
     {
-        self::$printer = $printer;
+        self::$labelProvider = $labelProvider;
     }
 
     /**

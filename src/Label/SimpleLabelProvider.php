@@ -1,10 +1,10 @@
 <?php
 
-namespace Enum\Printer;
+namespace Enum\Label;
 
 use Enum\Enum;
 
-class SimpleEnumPrinter implements EnumPrinter
+class SimpleLabelProvider implements LabelProvider
 {
     public function getPrint(Enum $enum)
     {

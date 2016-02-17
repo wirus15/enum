@@ -1,19 +1,19 @@
 <?php
 
-namespace Enum\Printer;
+namespace Enum\Label;
 
 use Enum\Enum;
 
-class SimpleEnumPrinterTest extends \PHPUnit_Framework_TestCase
+class SimpleLabelProviderTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var SimpleEnumPrinter
+     * @var SimpleLabelProvider
      */
     private $sut;
 
     protected function setUp()
     {
-        $this->sut = new SimpleEnumPrinter();
+        $this->sut = new SimpleLabelProvider();
     }
 
     /**

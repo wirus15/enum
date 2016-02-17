@@ -3,9 +3,9 @@
 namespace test\Enum;
 
 use Enum\Enum;
-use Enum\Printer\EnumPrinter;
+use Enum\Label\LabelProvider;
 
-class UppercasePrinter implements EnumPrinter
+class UppercaseLabelProvider implements LabelProvider
 {
     public function getPrint(Enum $enum)
     {
