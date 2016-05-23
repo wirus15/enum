@@ -86,33 +86,6 @@ Enum::values(Example::class);
 Enum::has(1, Example::class);
 ```
 
-## Printers
-Enum objects can be casted to string easily. By default it is done by formatting the enum's key. For example:
-```php
-class AnotherExample extends Enum 
-{
-    const FOO_BAR_YOLO = 'fby';
-}
-
-$fby = AnotherExample::get('fby');
-echo (string)$fby;                        // 'Foo Bar Yolo'
-```
-
-You can register your own printer to customize:
-```php
-class ValuePrinter implements EnumPrinter
-{
-    public function getPrint(Enum $enum) 
-    {
-        return (string)$enum->value();
-    }
-}
-
-Enum::registerPrinter(new ValuePrinter());
-
-echo (string)$fby;                        // 'fby'
-```
-
 ## Development and tests
 
 To develop this lib we are using [docker](http://docker.io) and [docker-compose](https://docs.docker.com/compose/overview/).

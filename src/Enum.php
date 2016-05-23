@@ -2,13 +2,10 @@
 
 namespace Enum;
 
-use Enum\Label\LabelProvider;
-use Enum\Label\SimpleLabelProvider;
-
 abstract class Enum
 {
     /**
-     * @var mixed
+     * @var string|int
      */
     private $key;
 
@@ -28,13 +25,8 @@ abstract class Enum
     private static $items = [];
 
     /**
-     * @var LabelProvider
-     */
-    private static $labelProvider;
-
-    /**
      * Enum constructor.
-     * @param mixed $key
+     * @param string|int $key
      * @param mixed $value
      */
     private function __construct($key, $value)
@@ -59,23 +51,6 @@ abstract class Enum
     public function value()
     {
         return $this->value;
-    }
-
-    /**
-     * Returns human readable label provided by currently registered LabelProvider
-     * @return string
-     */
-    public function label()
-    {
-        static $defaultProvider;
-
-        if ($defaultProvider === null) {
-            $defaultProvider = new SimpleLabelProvider();
-        }
-
-        $provider = self::$labelProvider ?: $defaultProvider;
-
-        return $provider->getPrint($this);
     }
 
     /**
@@ -194,20 +169,11 @@ abstract class Enum
     }
 
     /**
-     * Sets a new label provider
-     * @param LabelProvider $labelProvider
-     */
-    public static function setLabelProvider(LabelProvider $labelProvider = null)
-    {
-        self::$labelProvider = $labelProvider;
-    }
-
-    /**
      * Returns label
      */
     public function __toString()
     {
-        return $this->label();
+        return $this->key;
     }
 
     /**

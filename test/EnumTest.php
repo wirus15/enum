@@ -67,31 +67,13 @@ class EnumTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($xyz->in([]));
     }
 
-    public function testLabelAndToString()
+    public function testToString()
     {
         $foo = ExampleEnum::get(ExampleEnum::FOO);
         $bar = ExampleEnum::get(ExampleEnum::BAR);
 
-        $this->assertEquals('Foo', $foo->label());
-        $this->assertEquals('Bar', $bar->label());
-        $this->assertEquals($foo->label(), (string)$foo);
-        $this->assertEquals($bar->label(), (string)$bar);
-    }
-
-    public function testSetLabelProvider()
-    {
-        $foo = ExampleEnum::get(ExampleEnum::FOO);
-        $bar = ExampleEnum::get(ExampleEnum::BAR);
-        $labelProvider = new UppercaseLabelProvider();
-        Enum::setLabelProvider($labelProvider);
-
-        $this->assertEquals('FOO', $foo->label());
-        $this->assertEquals('BAR', $bar->label());
-
-        // revert do default label provider
-        Enum::setLabelProvider(null);
-        $this->assertEquals('Foo', $foo->label());
-        $this->assertEquals('Bar', $bar->label());
+        $this->assertEquals('FOO', (string)$foo);
+        $this->assertEquals('BAR', (string)$bar);
     }
 
     public function testGetAndAllWithClassName()
