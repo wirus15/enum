@@ -5,7 +5,7 @@ namespace Enum;
 abstract class Enum
 {
     /**
-     * @var string|int
+     * @var string
      */
     private $key;
 
@@ -26,7 +26,7 @@ abstract class Enum
 
     /**
      * Enum constructor.
-     * @param string|int $key
+     * @param string $key
      * @param mixed $value
      */
     private function __construct($key, $value)
@@ -37,7 +37,7 @@ abstract class Enum
 
     /**
      * Returns enum key - constant name
-     * @return mixed
+     * @return string
      */
     public function key()
     {
