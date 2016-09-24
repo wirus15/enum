@@ -56,7 +56,7 @@ abstract class Enum
     /**
      * Get all enum items of particular enum class
      * @param string|null $class
-     * @return Enum[]
+     * @return \static[]|Enum[]
      * @throws EnumException
      */
     public static function all($class = null)
@@ -80,7 +80,7 @@ abstract class Enum
      * Returns an enum item with given value
      * @param mixed $value
      * @param string|null $class
-     * @return Enum
+     * @return \static|Enum
      * @throws EnumException
      */
     public static function get($value, $class = null)
@@ -179,7 +179,7 @@ abstract class Enum
     /**
      * @param string $name
      * @param array $arguments
-     * @return Enum
+     * @return \static|Enum
      * @throws EnumException
      */
     public static function __callStatic($name, $arguments)
