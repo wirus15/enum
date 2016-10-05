@@ -3,7 +3,6 @@
 namespace test\Enum;
 
 use Enum\Enum;
-use Enum\EnumException;
 
 class EnumTest extends \PHPUnit_Framework_TestCase
 {
@@ -85,11 +84,21 @@ class EnumTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($bar, Enum::get(ExampleEnum::BAR, ExampleEnum::class));
         $this->assertEquals($foo, Enum::get($foo, ExampleEnum::class));
         $this->assertEquals($bar, Enum::get($bar, ExampleEnum::class));
+    }
 
-        $this->expectException(EnumException::class);
+    /**
+     * @expectedException \Enum\EnumException
+     */
+    public function testGetThrowsExceptionWhenClassDoesntExist()
+    {
         Enum::get(ExampleEnum::FOO, 'some_fake_class');
+    }
 
-        $this->expectException(EnumException::class);
+    /**
+     * @expectedException \Enum\EnumException
+     */
+    public function testAllThrowsExceptionWhenClassDoesntExist()
+    {
         Enum::all('some_fake_class');
     }
 
@@ -97,8 +106,13 @@ class EnumTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(ExampleEnum::get(ExampleEnum::FOO), ExampleEnum::FOO());
         $this->assertEquals(ExampleEnum::get(ExampleEnum::BAR), ExampleEnum::BAR());
+    }
 
-        $this->expectException(EnumException::class);
+    /**
+     * @expectedException \Enum\EnumException
+     */
+    public function testStaticCallThrowsExceptionWhenMethodDoesntExist()
+    {
         ExampleEnum::WRONG();
     }
 
@@ -116,11 +130,13 @@ class EnumTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, Enum::values(ExampleEnum::class));
     }
 
+    /**
+     * @expectedException \Enum\EnumException
+     */
     public function testClone()
     {
         $foo = ExampleEnum::FOO();
 
-        $this->expectException(EnumException::class);
         $clone = clone $foo;
     }
 
