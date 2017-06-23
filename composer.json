@@ -3,6 +3,8 @@
   "type": "library",
   "version": "0.4",
   "license": "MIT",
+  "description": "A simple PHP library for creating enum objects.",
+  "homepage": "https://github.com/wirus15/enum",
   "authors": [{
     "name": "Maciej Krawczyk",
     "email": "wirus15@gmail.com"
