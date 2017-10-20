@@ -26,10 +26,11 @@ abstract class Enum
 
     /**
      * Enum constructor.
+     *
      * @param string $key
      * @param mixed $value
      */
-    private function __construct($key, $value)
+    private function __construct(string $key, $value)
     {
         $this->key = $key;
         $this->value = $value;
@@ -37,15 +38,17 @@ abstract class Enum
 
     /**
      * Returns enum key - constant name
+     *
      * @return string
      */
-    public function key()
+    public function key(): string
     {
         return $this->key;
     }
 
     /**
      * Returns enum value - constant value
+     *
      * @return mixed
      */
     public function value()
@@ -55,20 +58,21 @@ abstract class Enum
 
     /**
      * Get all enum items of particular enum class
-     * @param string|null $class
-     * @return \static[]|Enum[]
-     * @throws EnumException
+     *
+     * @return \static[]
      */
-    public static function all($class = null)
+    public static function all(): array
     {
-        $class = $class ?: get_called_class();
+        $class = get_called_class();
 
         if (isset(self::$items[$class])) {
             return self::$items[$class];
         }
 
-        $constants = self::constants($class);
+        $constants = static::constants();
+
         $items = [];
+
         foreach ($constants as $key => $value) {
             $items[$value] = new $class($key, $value);
         }
@@ -77,43 +81,65 @@ abstract class Enum
     }
 
     /**
-     * Returns an enum item with given value
-     * @param mixed $value
-     * @param string|null $class
-     * @return \static|Enum
+     * Returns enum instances only with given values
+     *
+     * @param array $values
+     * @return \static[]
      * @throws EnumException
      */
-    public static function get($value, $class = null)
+    public static function only(array $values): array
     {
+        $items = [];
+
+        foreach ($values as $value) {
+            $item = static::get($value);
+            $items[$item->value()] = $item;
+        }
+
+        return $items;
+    }
+
+    /**
+     * Returns an enum item with given value
+     *
+     * @param mixed $value
+     * @return \static
+     * @throws EnumException
+     */
+    public static function get($value): self
+    {
+        $class = get_called_class();
+
         if ($value instanceof self) {
             $value = $value->value();
         }
 
-        if (!static::has($value, $class)) {
+        if (!static::has($value)) {
             throw EnumException::invalidEnumValue($class, $value);
         }
 
-        return static::all($class)[$value];
+        return static::all()[$value];
     }
 
     /**
      * Tells if the enum contains a particular value
+     *
      * @param mixed $value
-     * @param string|null $class
      * @return bool
      */
-    public static function has($value, $class = null)
+    public static function has($value): bool
     {
-        return array_key_exists($value, static::all($class));
+        return array_key_exists($value, static::all());
     }
 
     /**
      * Compares enum object with given value.
+     *
      * @param mixed $value
      * @param boolean $strict Also checks the given value's type
      * @return boolean
      */
-    public function is($value, $strict = false)
+    public function is($value, ?bool $strict = false): bool
     {
         if ($this === $value) {
             return true;
@@ -132,10 +158,11 @@ abstract class Enum
 
     /**
      * Checks if this enum is contained in the given array of values
+     *
      * @param array $values
      * @return bool
      */
-    public function in(array $values)
+    public function in(array $values): bool
     {
         foreach ($values as $value) {
             if ($this->is($value)) {
@@ -148,32 +175,30 @@ abstract class Enum
 
     /**
      * Returns all enum keys of particular class
-     * @param string|null $class
+     *
      * @return string[]
-     * @throws EnumException
      */
-    public static function keys($class = null)
+    public static function keys(): array
     {
-        return array_keys(static::constants($class));
+        return array_keys(static::constants());
     }
 
     /**
      * Returns all enum values of particular class
-     * @param string|null $class
+     *
      * @return array
-     * @throws EnumException
      */
-    public static function values($class = null)
+    public static function values(): array
     {
-        return array_values(static::constants($class));
+        return array_values(static::constants());
     }
 
     /**
      * Returns label
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->key;
+        return (string)$this->value();
     }
 
     /**
@@ -203,20 +228,15 @@ abstract class Enum
 
     /**
      * Returns constants map of given class
-     * @param string $class
+     *
      * @return array
-     * @throws EnumException
      */
-    private static function constants($class = null)
+    private static function constants(): array
     {
-        $class = $class ?: get_called_class();
+        $class = get_called_class();
 
         if (isset(self::$constants[$class])) {
             return self::$constants[$class];
-        }
-
-        if (!is_subclass_of($class, self::class)) {
-            throw EnumException::notValidEnumClass($class);
         }
 
         $reflection = new \ReflectionClass($class);
