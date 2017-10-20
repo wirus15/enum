@@ -1,12 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace test\Enum;
 
 use Enum\Enum;
 
 /**
- * Class ExampleEnum
- * @package test\Enum
  * @method static string FOO()
  * @method static string BAR()
  * @method static string XYZ()
