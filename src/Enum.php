@@ -139,7 +139,7 @@ abstract class Enum
      * @param boolean $strict Also checks the given value's type
      * @return boolean
      */
-    public function is($value, ?bool $strict = false): bool
+    public function is($value, bool $strict = false): bool
     {
         if ($this === $value) {
             return true;
