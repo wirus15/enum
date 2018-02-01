@@ -1,12 +1,12 @@
 # Enum
-A simple PHP library for creating enum objects.
+A simple PHP library for creating Enum objects.
 
 ## Examples
-Defining a new enum class
+Defining a new Enum class
 ```php
 use Enum\Enum;
 
-// defining our enum class
+// defining our Enum class
 final class Example extends Enum
 {
     const FOO = 1;
@@ -38,7 +38,7 @@ test($yolo);  // Yolo
 
 ```
 
-Getting enum instances, listing keys and values
+Getting Enum instances, listing keys and values
 
 ```php
 Example::get(Example::FOO);               // instance of Example
@@ -54,14 +54,14 @@ Example::has(3);                          // true
 Example::has(4);                          // false
 ```
 
-Getting single enum properties
+Getting single Enum properties
 ```php
 $foo = Example::FOO();
 $foo->key();                              // 'FOO'
 $foo->value();                            // 1
 ```
 
-Comparing enums
+Comparing Enums
 ```php
 $foo = Example::FOO();
 $foo->is(1);                              // true
@@ -76,7 +76,7 @@ $foo->is(1, true);                        // false
 $foo->in([1,2,3]);                        // true
 $foo->in([2,3]);                          // false
 ```
-You can also make static calls and specify enum class
+You can also make static calls and specify Enum class
 
 ```php
 Enum::get(Example::FOO, Example::class);
@@ -93,7 +93,6 @@ After installation of those you should run:
 
 ```
 bash
-docker-compose up
 docker-compose run enum bash
 ```
 
